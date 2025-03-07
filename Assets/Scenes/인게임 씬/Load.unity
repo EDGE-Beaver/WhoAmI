@@ -969,6 +969,7 @@ MonoBehaviour:
   - Graphics/CharacterImage/Yu_ nurse/Yu_Face_Standard
   - Graphics/CharacterImage/Yu_ nurse/Yu_Face_Standard
   - Graphics/CharacterImage/Yu_ nurse/Yu_Face_Smile
+  - Graphics/CharacterImage/Yu_ nurse/Yu_Face_Serious
   ImageObj:
   - {fileID: 1123024302}
   - {fileID: 223597938}
@@ -1712,6 +1713,9 @@ MonoBehaviour:
   - Graphics/BackGround/BlackBackGround
   - "Graphics/BackGround/\uC0C1\uB2F4\uC2E4"
   - "Graphics/BackGround/\uBCF5\uB3C4"
+  - "Graphics/BackGround/\uBCD1\uC6D0 \uBCF5\uB3C4"
+  - "Graphics/BackGround/\uAC80\uC740 \uD654\uBA74"
+  - "Graphics/BackGround/\uC2DD\uB2F9"
 --- !u!4 &1160307807
 Transform:
   m_ObjectHideFlags: 0

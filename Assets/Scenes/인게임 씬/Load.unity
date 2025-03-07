@@ -968,6 +968,7 @@ MonoBehaviour:
   - Graphics/CharacterImage/Yu_ nurse/Yu_Face_Mock
   - Graphics/CharacterImage/Yu_ nurse/Yu_Face_Standard
   - Graphics/CharacterImage/Yu_ nurse/Yu_Face_Standard
+  - Graphics/CharacterImage/Yu_ nurse/Yu_Face_Smile
   ImageObj:
   - {fileID: 1123024302}
   - {fileID: 223597938}
@@ -3097,21 +3098,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1715a9e1c8d83e44b0fd75d4ae81cd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SoundEffectFile:
-  - Audio/SE/Knock
-  - "Audio/SE/\uC2EC\uBC8C\uC988\uC5ED\uC7AC\uC0DD"
-  - "Audio/SE/\uC720\uC774\uC5F0\uAC77\uB294\uC18C\uB9AC"
-  BgmAudioFile:
-  - "Audio/BGM/\uBE57\uC18C\uB9AC"
-  - Audio/BGM/nurse_default
-  - "Audio/BGM/\uC758\uC0AC"
-  VoiceAudioFile:
-  - Audio/Voice/soheok_voice
-  - Audio/Voice/nurse_voice
-  - Audio/Voice/doctor_voice
-  SoundEffectListner: {fileID: 2069181089}
-  BgmListener: {fileID: 1407525432}
-  VoicListener: {fileID: 199581127}
+  SoundEffectClips:
+  - {fileID: 8300000, guid: 715acadbb83d8dd479a39520a5ef8604, type: 3}
+  - {fileID: 8300000, guid: 79d0a07096e7d9a47843a4bffa1a254b, type: 3}
+  - {fileID: 8300000, guid: d6b7d0b2e6334fb4a946e817d5b64a1b, type: 3}
+  BgmAudioClips:
+  - {fileID: 8300000, guid: b7ea70ed995904d4d86c996a9414d954, type: 3}
+  - {fileID: 8300000, guid: 55cf3554e4ee9fb41bf1b6f01f7304ff, type: 3}
+  VoiceAudioClips:
+  - {fileID: 8300000, guid: 79ba90cfd5083164d8da571e7a7779a8, type: 3}
+  - {fileID: 8300000, guid: 9342e1514fb907345841f54c3f955baf, type: 3}
+  - {fileID: 8300000, guid: 690c10d26d9db0e48814fc54d3144fd9, type: 3}
+  - {fileID: 8300000, guid: 881ccd81c205a8841a38b22e0c8d5455, type: 3}
+  SeAudioSource: {fileID: 2069181091}
+  BgmAudioSource: {fileID: 1407525434}
+  VoiceAudioSource: {fileID: 199581129}
 --- !u!1 &1625728611
 GameObject:
   m_ObjectHideFlags: 0

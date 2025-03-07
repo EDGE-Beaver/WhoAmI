@@ -140,11 +140,6 @@ public class SoundManager : MonoBehaviour
     /// </summary>
     public void PlayCurrentVoice()
     {
-        if (CurrentVoiceClip == null)
-        {
-            Debug.LogError("❌ PlayCurrentVoice 오류: 현재 설정된 보이스 파일이 없습니다!");
-            return;
-        }
         VoiceAudioSource.PlayOneShot(CurrentVoiceClip);
         VoiceAudioSource.Play();
         Debug.Log($"🎤 보이스 재생: {CurrentVoiceFile}");

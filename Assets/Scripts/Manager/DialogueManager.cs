@@ -527,48 +527,37 @@ public class DialogueManager : MonoBehaviour
             soundManager.PlayCurrentVoice();
         }
 
-        for (int i = 0; i < fullText.Length; i++)
+        // 🔥 특수 태그를 먼저 제거하여 클린한 텍스트 추출
+        string cleanText = RemoveAllTags(fullText);
+
+        for (int i = 0; i < cleanText.Length; i++)
         {
-            char c = fullText[i];
-
-            // 보이스 태그를 감지하여 보이스 변경 가능
-            if (c == '|')
-            {
-                int nextVoiceIndex = i + 1;
-                string nextVoice = "";
-
-                while (nextVoiceIndex < fullText.Length && fullText[nextVoiceIndex] != '|')
-                {
-                    nextVoice += fullText[nextVoiceIndex];
-                    nextVoiceIndex++;
-                }
-
-                if (!string.IsNullOrEmpty(nextVoice))
-                {
-                    Debug.Log($"🎤 보이스 변경: {nextVoice}");
-                    soundManager.SetCurrentVoice(nextVoice);
-                    soundManager.PlayCurrentVoice();
-                }
-
-                i = nextVoiceIndex;
-                continue;
-            }
+            char c = cleanText[i];
 
             // 한 글자씩 출력
             DialogueText.text += c;
             remainTextAmout--;
 
-            // 🔥 보이스를 타이핑 효과처럼 재생 (3글자마다 반복)
-            if (i % 3 == 0 && !string.IsNullOrEmpty(soundManager.GetCurrentVoiceFile()))
-            {
-                soundManager.PlayCurrentVoice();
-            }
+            soundManager.PlayCurrentVoice();
+            
 
             yield return new WaitForSeconds(currentDelay);
         }
 
         isTyping = false;
         onCompleteTyping();
+    }
+
+    /// <summary>
+    /// 대사에서 불필요한 태그를 제거하여 클린한 텍스트를 반환합니다.
+    /// </summary>
+    private string RemoveAllTags(string fullText)
+    {
+        // 🔹 특수 태그 패턴 정의 (Regex 활용)
+        string pattern = @"[\\$@#*%^]-?\d+(\.\d+)?|\(end\)";
+
+        // 🔥 정규식을 사용하여 모든 태그 제거
+        return Regex.Replace(fullText, pattern, "");
     }
 
     public string RemoveAllTag(string fullText)

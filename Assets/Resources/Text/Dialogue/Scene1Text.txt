@@ -56,7 +56,7 @@
 신소혁|(내 병실까진 아직 좀 남았는데 어떡하지)|||||||None
 신소혁|뭐라도 말을 걸어볼까?|||||||None
 신소혁|흠흠…|||||||None
-신소혁|우현 선생님, $0.2 참 좋은 분 같지 않아요?|Shin_Face_RealSmile,1000,Yu_Face_Standard,0001||||||None
+신소혁|우현 선생님, $0.2(end) 참 좋은 분 같지 않아요?|Shin_Face_RealSmile,1000,Yu_Face_Standard,0001||||||None
 유이연|........|||||||None
 신소혁|........|||||||None
 신소혁|(젠장, 괜히 말 걸었나?)|Shin_Face_Sweating,1000,Yu_Face_Standard,0001||||||None

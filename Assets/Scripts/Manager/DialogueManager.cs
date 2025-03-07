@@ -340,15 +340,17 @@ public class DialogueManager : MonoBehaviour
 
         //분기 설정
         if(HavetoTakeBranch){
-            if(currentIndex == SelectBranchEndIndex){
+            if(currentIndex == SelectBranchEndIndex+1){
                 //선택지의 다른 분기 중 하나에 도달했을 경우
                 currentIndex = SelectBranchDestindex;
                 HavetoTakeBranch = false;
                 ShowNextLine();
+                return;
             }else if(!(currentIndex <= SelectBranchEndIndex && currentIndex >=SeleceBranchStartIndex))
             {
                 currentIndex = SeleceBranchStartIndex;
                 ShowNextLine();
+                return;
 
             }
         }

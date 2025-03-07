@@ -275,9 +275,10 @@ public class ChoiceManager : MonoBehaviour
 
                 if (index < GotoBranch.Length && !string.IsNullOrEmpty(GotoBranch[index]))
                 {
-                    if(GotoBranch[index].Contains(":")){
+                    Debug.Log(GotoBranch[index]);
+                    if(GotoBranch[index].Contains("/")){
                         //변수 변경까지 겸하는 이동일 경우
-                        string[] MoveAndChange = GotoBranch[index].Split(":");
+                        string[] MoveAndChange = GotoBranch[index].Split("/");
                         string[] MovePart = MoveAndChange[0].Split('~');//어디로 이동할지에 대한 파트
                         string MoveStart = MovePart[0];
                         string MoveEnd = MovePart[1]; 
@@ -289,7 +290,7 @@ public class ChoiceManager : MonoBehaviour
                         int EndIndex;
                         int DestIndex;
                         if (ChangePart.Length == 2 && int.TryParse(ChangePart[1], out value) && 
-                           MovePart.Length == 2 && int.TryParse(MoveStart, out StartIndex) &&
+                           MovePart.Length == 3 && int.TryParse(MoveStart, out StartIndex) &&
                            int.TryParse(MoveEnd, out EndIndex) && int.TryParse(Destination, out DestIndex))
                         {
                             //파싱에 성공했을 경우
@@ -319,7 +320,7 @@ public class ChoiceManager : MonoBehaviour
                         int StartIndex;
                         int EndIndex;
                         int DestIndex;
-                        if (MovePart.Length == 2 && int.TryParse(MoveStart, out StartIndex) &&
+                        if (MovePart.Length == 3 && int.TryParse(MoveStart, out StartIndex) &&
                            int.TryParse(MoveEnd, out EndIndex) && int.TryParse(Destination, out DestIndex))
                         {
                             //파싱에 성공했을 경우
@@ -343,7 +344,7 @@ public class ChoiceManager : MonoBehaviour
                     
                 }
             }
-             for (int i = 0; i < choiceButtons.Length; i++)
+            for (int i = 0; i < choiceButtons.Length; i++)
             {
             if (i < choices.Length && !string.IsNullOrEmpty(choices[i]))
             {

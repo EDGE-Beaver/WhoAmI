@@ -611,7 +611,7 @@ public class DialogueManager : MonoBehaviour
                     endIdx++;
                 }
                 if (float.TryParse(volumeVal, out float newVolume))
-                    soundManager.SetVoiceVolum(newVolume);
+                    soundManager.SetVoiceVolume(newVolume);
 
                 i = endIdx - 1;
                 continue;

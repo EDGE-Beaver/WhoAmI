@@ -112,6 +112,12 @@ public class SoundManager : MonoBehaviour
         SeAudioSource.PlayOneShot(SoundEffect[CurrentSeFile]);
         Debug.Log($"▶️ 효과음 재생: {CurrentSeFile}");
     }
+    public void SetVoiceVolume(float size)
+    {
+        VoiceAudioSource.volume = Mathf.Clamp(size, 0f, 1f); // 0~1 사이 값으로 제한
+        Debug.Log($"🔊 보이스 볼륨 설정: {size}");
+    }
+
     /// <summary>
     /// 현재 설정된 보이스 파일명을 반환합니다.
     /// </summary>
@@ -156,12 +162,4 @@ public class SoundManager : MonoBehaviour
         Debug.Log($"🎛 보이스 피치 변경: {VoiceAudioSource.pitch}");
     }
 
-    /// <summary>
-    /// 보이스의 볼륨을 조절합니다. (0 ~ 1 범위)
-    /// </summary>
-    public void SetVoiceVolume(float volume)
-    {
-        VoiceAudioSource.volume = Mathf.Clamp01(volume);
-        Debug.Log($"🔊 보이스 볼륨 변경: {VoiceAudioSource.volume}");
-    }
 }

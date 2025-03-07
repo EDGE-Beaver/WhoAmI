@@ -58,6 +58,20 @@ public class CharacterImageManager : MonoBehaviour
     {
         LoadAllImageFile();
     }
+    public void TriggerNodAnimation()
+    {
+        // 애니메이션 실행 (예: "Nod" 애니메이션 트리거)
+        Animator characterAnimator = GetComponent<Animator>(); // 캐릭터 애니메이터 가져오기
+        if (characterAnimator != null)
+        {
+            characterAnimator.SetTrigger("Nod");
+            Debug.Log("🎭 끄덕 애니메이션 실행");
+        }
+        else
+        {
+            Debug.LogError("🚨 Animator가 존재하지 않음!");
+        }
+    }
 
     private void LoadAllImageFile()
     {

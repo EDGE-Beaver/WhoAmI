@@ -68,7 +68,7 @@
 신소혁|무슨 말씀 하셨나요?|Shin_Normal_Stand,1000,Yu_Face_Mock,0001||soheok_voice||||None
 유이연|아 죄송합니다. 평소에 환자분들이 제게 사적으로 말을 거는 일이 별로 없어서요.|Yu_Face_Mock,1000,Shin_Normal_Stand,0100||nurse_voice||||None
 유이연|지나가던 다른 환자분과 대화하시는 줄 알고 잠시 다른 생각을 했네요.|Yu_Face_Smile,1000,Shin_Normal_Stand,0100||nurse_voice||||None
-유이연|그래서 뭐라고 하셨죠?|Yu_Face_Mock,1000,Shin_Normal_Stand,0100,Baek_Face_Wondering,0001||nurse_voice||||None
+유이연|그래서 뭐라고 하셨죠?|Yu_Face_Mock,1000,Shin_Normal_Stand,0100||nurse_voice||||None
 신소혁|방금 비웃음이 들린 것 같은데 기분 탓인가?|Shin_Face_Concentrate,1000,Yu_Face_Standard,0001||soheok_voice||||None
 신소혁|아 별건 아니고요.|Shin_Normal_Stand,1000,Yu_Face_Standard,0001||soheok_voice||||None
 신소혁|우현 선생님은 참 좋은 분 같아서요 항상 세심한 부분에도 신경 써주시고, 상담할 때도 되게 친절하시고.|Shin_Normal_Stand,1000,Yu_Face_Standard,0001||soheok_voice||||None

@@ -511,35 +511,136 @@ public class DialogueManager : MonoBehaviour
     }
     IEnumerator TypeText(string fullText)
     {
-        isTyping = true; // 타이핑 중인 상태
+        isTyping = true; // 타이핑 중 상태
         Debug.Log(fullText);
         DialogueText.text = "";
 
-        /*[텍스트 애니메이션 관련 변수]*/
-        float currentDelay = defaultDelay;
+        float currentDelay = defaultDelay; // 출력 속도
         remainTextAmout = fullText.Length;
 
-        // 🔥 현재 설정된 보이스 파일이 있다면 자동 재생
-        string currentVoice = soundManager.GetCurrentVoiceFile();
-        if (!string.IsNullOrEmpty(currentVoice))
+        string cleanText = "";
+        bool isSkipping = false;
+
+        for (int i = 0; i < fullText.Length; i++)
         {
-            Debug.Log($"🎤 보이스 재생: {currentVoice}");
-            soundManager.PlayCurrentVoice();
-        }
+            char c = fullText[i];
 
-        // 🔥 특수 태그를 먼저 제거하여 클린한 텍스트 추출
-        string cleanText = RemoveAllTags(fullText);
+            // 🔥 `\` 태그 (출력 속도 변경)
+            if (c == '\\')
+            {
+                if (fullText[i + 1] == 'r')
+                {
+                    currentDelay = defaultDelay; // 원래 속도로 복구
+                    i++; // r 문자 스킵
+                    continue;
+                }
 
-        for (int i = 0; i < cleanText.Length; i++)
-        {
-            char c = cleanText[i];
+                int endIdx = i + 1;
+                string speedVal = "";
+                while (endIdx < fullText.Length && char.IsDigit(fullText[endIdx]))
+                {
+                    speedVal += fullText[endIdx];
+                    endIdx++;
+                }
+                if (float.TryParse(speedVal, out float newSpeed))
+                    currentDelay = defaultDelay / newSpeed;
 
-            // 한 글자씩 출력
+                i = endIdx - 1;
+                continue;
+            }
+
+            // 🔥 `$` 태그 (출력 대기 시간)
+            if (c == '$')
+            {
+                int endIdx = i + 1;
+                string waitTime = "";
+                while (endIdx < fullText.Length && char.IsDigit(fullText[endIdx]))
+                {
+                    waitTime += fullText[endIdx];
+                    endIdx++;
+                }
+                if (float.TryParse(waitTime, out float waitSeconds))
+                    yield return new WaitForSeconds(waitSeconds);
+
+                i = endIdx - 1;
+                continue;
+            }
+
+            // 🔥 `@` 태그 (다이얼로그 폰트 크기 변경)
+            if (c == '@')
+            {
+                int endIdx = i + 1;
+                string fontSizeVal = "";
+                while (endIdx < fullText.Length && char.IsDigit(fullText[endIdx]))
+                {
+                    fontSizeVal += fullText[endIdx];
+                    endIdx++;
+                }
+                if (float.TryParse(fontSizeVal, out float newSize))
+                    DialogueText.fontSize = defaultDialogueTextSize * newSize;
+
+                i = endIdx - 1;
+                continue;
+            }
+
+            // 🔥 `#` 태그 (보이스 피치 변경)
+            if (c == '#')
+            {
+                int endIdx = i + 1;
+                string pitchVal = "";
+                while (endIdx < fullText.Length && char.IsDigit(fullText[endIdx]))
+                {
+                    pitchVal += fullText[endIdx];
+                    endIdx++;
+                }
+                if (float.TryParse(pitchVal, out float newPitch))
+                    soundManager.SetVoicePitch(newPitch);
+
+                i = endIdx - 1;
+                continue;
+            }
+
+            // 🔥 `*` 태그 (보이스 볼륨 변경)
+            if (c == '*')
+            {
+                int endIdx = i + 1;
+                string volumeVal = "";
+                while (endIdx < fullText.Length && char.IsDigit(fullText[endIdx]))
+                {
+                    volumeVal += fullText[endIdx];
+                    endIdx++;
+                }
+                if (float.TryParse(volumeVal, out float newVolume))
+                    soundManager.SetVoiceVolum(newVolume);
+
+                i = endIdx - 1;
+                continue;
+            }
+
+            // 🔥 `%` 태그 (선택지 표시)
+            if (c == '%')
+            {
+                hasChoice = true;
+                continue;
+            }
+
+            // 🔥 `^` 태그 (끄덕 애니메이션 실행)
+            if (c == '^')
+            {
+                characterImageManager.TriggerNodAnimation();
+                continue;
+            }
+
+            // 🔹 한 글자씩 출력
+            cleanText += c;
             DialogueText.text += c;
             remainTextAmout--;
 
-            soundManager.PlayCurrentVoice();
-            
+            // 🔥 보이스를 타이핑 효과처럼 재생 (3글자마다 반복)
+            if (i % 3 == 0 && !string.IsNullOrEmpty(soundManager.GetCurrentVoiceFile()))
+            {
+                soundManager.PlayCurrentVoice();
+            }
 
             yield return new WaitForSeconds(currentDelay);
         }

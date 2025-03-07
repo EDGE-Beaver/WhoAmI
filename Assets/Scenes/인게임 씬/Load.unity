@@ -970,6 +970,14 @@ MonoBehaviour:
   - Graphics/CharacterImage/Yu_ nurse/Yu_Face_Standard
   - Graphics/CharacterImage/Yu_ nurse/Yu_Face_Smile
   - Graphics/CharacterImage/Yu_ nurse/Yu_Face_Serious
+  - Graphics/CharacterImage/Yoon_Patient/Yoon_Face_Hmm
+  - Graphics/CharacterImage/Yoon_Patient/Yoon_Face_Phone Look
+  - Graphics/CharacterImage/Yoon_Patient/Yoon_Face_Talking
+  - Graphics/CharacterImage/Yoon_Patient/Yoon_Face_Smirk
+  - Graphics/CharacterImage/Yoon_Patient/Yoon_Face_Hmm
+  - Graphics/CharacterImage/Yoon_Patient/Yoon_Face_Dead Eyes
+  - Graphics/CharacterImage/Yoon_Patient/Yoon_Face_Crying
+  - Graphics/CharacterImage/Yoon_Patient/Yoon_Face_Normal
   ImageObj:
   - {fileID: 1123024302}
   - {fileID: 223597938}

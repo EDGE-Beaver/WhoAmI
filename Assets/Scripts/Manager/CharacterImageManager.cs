@@ -83,11 +83,7 @@ public class CharacterImageManager : MonoBehaviour
         foreach (var filePath in ImageFilePath)
         {
             Sprite imageAsset = Resources.Load<Sprite>(filePath);
-            if (imageAsset == null)
-            {
-                Debug.LogError($"🚨 이미지 파일을 찾을 수 없습니다 : {filePath}");
-                continue;
-            }
+       
 
     
             

@@ -103,7 +103,6 @@ using UnityEditor.ShaderKeywordFilter;
 using System.Diagnostics.Tracing;
 
 
-
 public class DialogueManager : MonoBehaviour
 {
     [Header("파일 매니저 (Inspector에서 지정)")]
@@ -415,6 +414,7 @@ public class DialogueManager : MonoBehaviour
         string voice = data[4]?.Trim();//보이스(넣을 수 있을지도?)
         if(!string.IsNullOrEmpty(voice)){
             soundManager.SetCurrentVoice(voice);//현재 보이스 설정
+            soundManager.PlayCurrentVoice();
         }
         string bgm = data[5]?.Trim();
         string background = data[6]?.Trim();
@@ -457,11 +457,6 @@ public class DialogueManager : MonoBehaviour
             StartAnimation(Animation);
         }
         
-    
-
-
-        
-
 
         //모든 정보가 갖춰졌다. 
         Debug.Log($"✅ 대사 정보 - 화자: {speaker}, 대사: {dialogue}, 선택지 데이터: {choiceField}");
@@ -516,161 +511,66 @@ public class DialogueManager : MonoBehaviour
     }
     IEnumerator TypeText(string fullText)
     {
-        isTyping = true;//타이핑 중인걸 확인.
+        isTyping = true; // 타이핑 중인 상태
         Debug.Log(fullText);
         DialogueText.text = "";
 
-        /*[기존 변수들 - 새로운 변수들 저장하는 곳]*/
+        /*[텍스트 애니메이션 관련 변수]*/
         float currentDelay = defaultDelay;
-        //defaultDelay = 기본 딜레이
-        //currentDelay = 현재 딜레이
         remainTextAmout = fullText.Length;
+
+        // 🔥 현재 설정된 보이스 파일이 있다면 자동 재생
+        string currentVoice = soundManager.GetCurrentVoiceFile();
+        if (!string.IsNullOrEmpty(currentVoice))
+        {
+            Debug.Log($"🎤 보이스 재생: {currentVoice}");
+            soundManager.PlayCurrentVoice();
+        }
+
         for (int i = 0; i < fullText.Length; i++)
         {
             char c = fullText[i];
-            //출력 속도 변경 (\숫자). 
-            if (c == '\\')
-            //하나 이스케이프 문자였구나
+
+            // 보이스 태그를 감지하여 보이스 변경 가능
+            if (c == '|')
             {
-                // 여긴 안전한 곳이에요.\2 <- 이 부분에 해당
-                int endIdx = i + 1;
-                int digitLength = 0;//길이 판정.
-                while (endIdx < fullText.Length && !string.Equals("(end)", fullText.Substring(endIdx, 5)))
+                int nextVoiceIndex = i + 1;
+                string nextVoice = "";
+
+                while (nextVoiceIndex < fullText.Length && fullText[nextVoiceIndex] != '|')
                 {
-                    //태그가 끝날 때까지
-                    endIdx++;//일단 인덱스 놀리고
-                    digitLength++;
-                    if (endIdx == fullText.Length)
-                    {
-                        Debug.LogError($"{fullText} 부분에 \\ 태그 처리를 잘못하셨습니다. (end)가 없습니다");
-                    }
+                    nextVoice += fullText[nextVoiceIndex];
+                    nextVoiceIndex++;
                 }
 
-                if (float.TryParse(fullText.Substring(i + 1, digitLength), out float newSpeed))
-
-                    currentDelay = defaultDelay * newSpeed;
-                else if (fullText.Substring(i + 1, digitLength).Equals("r"))
-                    //원상복수
-                    currentDelay = defaultDelay;
-
-                i = endIdx + 4;
-                continue;
-            }
-
-            // 대기 ($숫자)
-            if (c == '$')
-            {
-                int endIdx = i + 1;
-                int digitLength = 0;//길이 판정.
-                while (endIdx < fullText.Length && !fullText.Substring(endIdx, 5).Equals("(end)"))
+                if (!string.IsNullOrEmpty(nextVoice))
                 {
-                    endIdx++;
-                    digitLength++;
-                    if (endIdx == fullText.Length)
-                    {
-                        Debug.LogError($"{fullText} 부분에 $ 태그 처리를 잘못하셨습니다. (end)가 없습니다");
-                    }
+                    Debug.Log($"🎤 보이스 변경: {nextVoice}");
+                    soundManager.SetCurrentVoice(nextVoice);
+                    soundManager.PlayCurrentVoice();
                 }
 
-                if (float.TryParse(fullText.Substring(i + 1, endIdx - (i + 1)), out float waitTime)){
-                    yield return new WaitForSeconds(waitTime);
-                }
-                
-
-                i = endIdx + 4;
-                continue;
-            }
-
-            // 크기 변경 (@숫자)
-            if (c == '@')
-            {
-                int endIdx = i + 1;
-                int digitLength = 0;//길이 판정.
-                while (endIdx < fullText.Length && !fullText.Substring(endIdx, 5).Equals("(end)"))
-                {
-                    endIdx++;
-                    digitLength++;
-                    if (endIdx == fullText.Length)
-                    {
-                        Debug.LogError($"{fullText} 부분에 @ 태그 처리를 잘못하셨습니다. (end)가 없습니다");
-                    }
-                }
-
-                if (float.TryParse(fullText.Substring(i + 1, digitLength), out float newSize))
-                {
-                    DialogueText.fontSize *= newSize;
-                }
-                else if (fullText.Substring(i + 1, digitLength).Equals("r"))
-                {
-                    //원상복구 로직.
-                    DialogueText.fontSize = defaultDialogueTextSize;
-
-                }
-
-                i = endIdx + 4;
-                continue;
-            }
-
-            // 보이스 피치 변경 (#숫자)
-            if (c == '#')
-            {
-                int endIdx = i + 1;
-                while (endIdx < fullText.Length && !fullText.Substring(endIdx, 5).Equals("(end)"))
-                {
-                    endIdx++;
-                    if (endIdx == fullText.Length)
-                    {
-                        Debug.LogError($"{fullText} 부분에 # 태그 처리를 잘못하셨습니다. (end)가 없습니다");
-                    }
-                }
-
-                if (float.TryParse(fullText.Substring(i + 1, endIdx - (i + 1)), out float pitchChange))
-                {
-                    soundManager.SetVoicePitch(pitchChange);
-                }
-
-                i = endIdx + 4;//end 건너뛰기
-                continue;
-            }
-
-
-            // 보이스 볼륨 변경 (*숫자)
-            if (c == '*')
-            {
-                int endIdx = i + 1;
-                while (endIdx < fullText.Length && !fullText.Substring(endIdx, 5).Equals("(end)"))
-                {
-                    endIdx++;
-                    if (endIdx == fullText.Length)
-                    {
-                        Debug.LogError($"{fullText} 부분에 * 태그 처리를 잘못하셨습니다. (end)가 없습니다");
-                    }
-                }
-
-                if (float.TryParse(fullText.Substring(i + 1, endIdx - (i + 1)), out float newVolume))
-                    soundManager.SetVoiceVolum(newVolume);
-
-                i = endIdx + 4;////end 건너뛰기
-                continue;
-            }
-
-            // 선택지 (%n) 또는 끄덕 (^n)
-            if (c == '%' || c == '^')
-            {
+                i = nextVoiceIndex;
                 continue;
             }
 
             // 한 글자씩 출력
             DialogueText.text += c;
             remainTextAmout--;
+
+            // 🔥 보이스를 타이핑 효과처럼 재생 (3글자마다 반복)
+            if (i % 3 == 0 && !string.IsNullOrEmpty(soundManager.GetCurrentVoiceFile()))
+            {
+                soundManager.PlayCurrentVoice();
+            }
+
             yield return new WaitForSeconds(currentDelay);
         }
-
-        //출력이 다 끝나면
 
         isTyping = false;
         onCompleteTyping();
     }
+
     public string RemoveAllTag(string fullText)
     {
         string allText = "";

@@ -1973,7 +1973,7 @@ MonoBehaviour:
   fileManager: {fileID: 1961335}
   FileManagerObj: {fileID: 1961334}
   TextFileNameThisScene: Scene1Text
-  soundManager: {fileID: 0}
+  soundManager: {fileID: 1538887981}
   soundManagerObj: {fileID: 1538887979}
   characterImageManager: {fileID: 0}
   characterImageManagerObj: {fileID: 553241602}
@@ -3103,8 +3103,12 @@ MonoBehaviour:
   - "Audio/SE/\uC720\uC774\uC5F0\uAC77\uB294\uC18C\uB9AC"
   BgmAudioFile:
   - "Audio/BGM/\uBE57\uC18C\uB9AC"
-  - "Audio/BGM/\uADF8 \uBCD1\uC6D0\uC740"
-  VoiceAudioFile: []
+  - Audio/BGM/nurse_default
+  - "Audio/BGM/\uC758\uC0AC"
+  VoiceAudioFile:
+  - Audio/Voice/soheok_voice
+  - Audio/Voice/nurse_voice
+  - Audio/Voice/doctor_voice
   SoundEffectListner: {fileID: 2069181089}
   BgmListener: {fileID: 1407525432}
   VoicListener: {fileID: 199581127}

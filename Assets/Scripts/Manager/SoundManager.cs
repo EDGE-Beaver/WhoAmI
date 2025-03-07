@@ -98,6 +98,7 @@ public class SoundManager : MonoBehaviour
 
     void Awake()
     {
+       
         SoundEffectFileRead();//파일 불러오고
         if(SoundEffectListner == null && GameObject.Find("SeAudioSource") == null){
             //리스터 연결, 리스너가 없는 상황 확인. 
@@ -115,14 +116,16 @@ public class SoundManager : MonoBehaviour
             BgmAudioSource = BgmListener.GetComponent<AudioSource>();
         }
 
-        VoiceAudioFileRead();
-        if(VoicListener == null && GameObject.Find("VoiceAudioSource") == null){
-            //리스터 연결, 리스너가 없는 상황 확인. 
+        if (VoicListener == null && GameObject.Find("VoiceAudioSource") == null)
+        {
             Debug.LogError("VoiceAudioSource가 비어 있습니다! 생성해서 연결해주세요");
-        }else{
-            VoiceAudioSource = BgmListener.GetComponent<AudioSource>();
         }
-    
+        else
+        {
+            VoiceAudioSource = VoicListener.GetComponent<AudioSource>();
+        }
+
+
     }
 
     /*[파일 불러오는 로직]*/
@@ -132,39 +135,56 @@ public class SoundManager : MonoBehaviour
     /// </summary>
     private void VoiceAudioFileRead()
     {
-        foreach(var VoiceFileName in VoiceAudioFile){
-            AudioClip AudioClip  = Resources.Load<AudioClip>(VoiceFileName);
+        foreach (var VoiceFileName in VoiceAudioFile)
+        {
+            AudioClip AudioClip = Resources.Load<AudioClip>(VoiceFileName);
 
-            if(AudioClip == null){
-                Debug.LogError("VoiceAudioFileRead에서의 오류");
-                Debug.LogError("오디오 소스가 null입니다."); 
+            if (AudioClip == null)
+            {
+                Debug.LogError($"VoiceAudioFileRead 오류: {VoiceFileName}을(를) 찾을 수 없습니다!");
+            }
+            else
+            {
+                Debug.Log($"✅ 성공적으로 로드됨: {VoiceFileName}");
             }
 
-            VoiceAudio.Add(System.IO.Path.GetFileName(VoiceFileName), AudioClip);
-            
-            VoiceAudioFileName.Add(System.IO.Path.GetFileName(VoiceFileName));
+            string fileNameOnly = System.IO.Path.GetFileName(VoiceFileName); // 파일명만 추출
+            Debug.Log($"📂 등록된 보이스 파일명: {fileNameOnly}");
 
+            VoiceAudio.Add(fileNameOnly, AudioClip);
+            VoiceAudioFileName.Add(fileNameOnly);
         }
+
+        // 🔥 현재 로드된 모든 파일 리스트 출력
+        Debug.Log("🔍 현재 등록된 Voice 파일 목록: " + string.Join(", ", VoiceAudioFileName));
     }
 
-    /// <summary>
-    /// 전체 Bgm 파일을 읽어옵니다. 
-    /// </summary>
     private void BgmAudioFileRead()
     {
-        foreach(var BgmFileName in BgmAudioFile){
-            AudioClip AudioClip  = Resources.Load<AudioClip>(BgmFileName);
+        foreach (var BgmFileName in BgmAudioFile)
+        {
+            AudioClip AudioClip = Resources.Load<AudioClip>(BgmFileName);
 
-            if(AudioClip == null){
-                Debug.LogError("BgmAudioFileRead에서의 오류");
-                Debug.LogError("오디오 소스가 null입니다."); 
+            if (AudioClip == null)
+            {
+                Debug.LogError($"BgmAudioFileRead 오류: {BgmFileName}을(를) 찾을 수 없습니다!");
+            }
+            else
+            {
+                Debug.Log($"✅ 성공적으로 로드됨: {BgmFileName}");
             }
 
-            BgmAudio.Add(System.IO.Path.GetFileName(BgmFileName), AudioClip);
-            
-            BgmAudioFileName.Add(System.IO.Path.GetFileName(BgmFileName));
+            string fileNameOnly = System.IO.Path.GetFileName(BgmFileName);
+            Debug.Log($"📂 등록된 BGM 파일명: {fileNameOnly}");
+
+            BgmAudio.Add(fileNameOnly, AudioClip);
+            BgmAudioFileName.Add(fileNameOnly);
         }
+
+        // 🔥 현재 로드된 모든 BGM 파일 리스트 출력
+        Debug.Log("🔍 현재 등록된 BGM 파일 목록: " + string.Join(", ", BgmAudioFileName));
     }
+
 
     /// <summary>
     /// 전체 사운드 이펙트 파일을 읽어옵니다.
@@ -210,16 +230,17 @@ public class SoundManager : MonoBehaviour
 
     }
     /// <summary>
-    /// 현재 Bgm을 설정합니다. 
+    /// 현재 보이스 파일을 설정합니다.
     /// </summary>
-    /// <param name="VoiceName">설정하길 원하는 bgm의 이름입니다.</param>
-    public void SetCurrentVoice(string VoiceName){
-         if(!VoiceAudioFileName.Contains(VoiceName)){
-            Debug.LogError($"SetCurrentVoice에서의 에러\n{VoiceName}이라는 Voice 파일은 존재하지 않습니다.");
-        }
-        CurrentVoiceFile = VoiceName;
+    /// <param name="VoiceName">설정할 보이스 파일의 이름입니다.</param>
+    public void SetCurrentVoice(string VoiceName)
+    {
+        Debug.Log($"🔍 SetCurrentVoice 호출됨: {VoiceName}");
 
+        CurrentVoiceFile = VoiceName;
+        Debug.Log($"✅ 현재 보이스 파일 설정됨: {CurrentVoiceFile}");
     }
+
 
 
     /*[출력 부분]*/

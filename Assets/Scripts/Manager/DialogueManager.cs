@@ -518,26 +518,25 @@ public class DialogueManager : MonoBehaviour
         float currentDelay = defaultDelay; // 출력 속도
         remainTextAmout = fullText.Length;
 
-        string cleanText = "";
-        bool isSkipping = false;
+        string cleanText = ""; // 🔥 최종 출력될 텍스트
 
         for (int i = 0; i < fullText.Length; i++)
         {
             char c = fullText[i];
 
+            // 🔥 `(end)` 태그 감지 → 제거
+            if (fullText.Substring(i).StartsWith("(end)"))
+            {
+                i += 4; // (end) 포함해서 건너뛰기
+                continue;
+            }
+
             // 🔥 `\` 태그 (출력 속도 변경)
             if (c == '\\')
             {
-                if (fullText[i + 1] == 'r')
-                {
-                    currentDelay = defaultDelay; // 원래 속도로 복구
-                    i++; // r 문자 스킵
-                    continue;
-                }
-
                 int endIdx = i + 1;
                 string speedVal = "";
-                while (endIdx < fullText.Length && char.IsDigit(fullText[endIdx]))
+                while (endIdx < fullText.Length && (char.IsDigit(fullText[endIdx]) || fullText[endIdx] == '.'))
                 {
                     speedVal += fullText[endIdx];
                     endIdx++;
@@ -554,7 +553,7 @@ public class DialogueManager : MonoBehaviour
             {
                 int endIdx = i + 1;
                 string waitTime = "";
-                while (endIdx < fullText.Length && char.IsDigit(fullText[endIdx]))
+                while (endIdx < fullText.Length && (char.IsDigit(fullText[endIdx]) || fullText[endIdx] == '.'))
                 {
                     waitTime += fullText[endIdx];
                     endIdx++;
@@ -571,7 +570,7 @@ public class DialogueManager : MonoBehaviour
             {
                 int endIdx = i + 1;
                 string fontSizeVal = "";
-                while (endIdx < fullText.Length && char.IsDigit(fullText[endIdx]))
+                while (endIdx < fullText.Length && (char.IsDigit(fullText[endIdx]) || fullText[endIdx] == '.'))
                 {
                     fontSizeVal += fullText[endIdx];
                     endIdx++;
@@ -588,7 +587,7 @@ public class DialogueManager : MonoBehaviour
             {
                 int endIdx = i + 1;
                 string pitchVal = "";
-                while (endIdx < fullText.Length && char.IsDigit(fullText[endIdx]))
+                while (endIdx < fullText.Length && (char.IsDigit(fullText[endIdx]) || fullText[endIdx] == '.'))
                 {
                     pitchVal += fullText[endIdx];
                     endIdx++;
@@ -605,7 +604,7 @@ public class DialogueManager : MonoBehaviour
             {
                 int endIdx = i + 1;
                 string volumeVal = "";
-                while (endIdx < fullText.Length && char.IsDigit(fullText[endIdx]))
+                while (endIdx < fullText.Length && (char.IsDigit(fullText[endIdx]) || fullText[endIdx] == '.'))
                 {
                     volumeVal += fullText[endIdx];
                     endIdx++;
@@ -631,9 +630,9 @@ public class DialogueManager : MonoBehaviour
                 continue;
             }
 
-            // 🔹 한 글자씩 출력
+            // 🔹 한 글자씩 출력 (태그 제거된 상태)
             cleanText += c;
-            DialogueText.text += c;
+            DialogueText.text = cleanText; // 🔥 출력할 텍스트를 업데이트
             remainTextAmout--;
 
             // 🔥 보이스를 타이핑 효과처럼 재생 (3글자마다 반복)
@@ -648,6 +647,7 @@ public class DialogueManager : MonoBehaviour
         isTyping = false;
         onCompleteTyping();
     }
+
 
     /// <summary>
     /// 대사에서 불필요한 태그를 제거하여 클린한 텍스트를 반환합니다.

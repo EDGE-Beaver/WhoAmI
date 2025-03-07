@@ -954,7 +954,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ImageFilePath:
   - Graphics/CharacterImage/Shin_Patient/Shin_Face_Angry
-  - Graphics/CharacterImage/Shin_Patient/Shin_Face_Sweating.png
+  - Graphics/CharacterImage/Shin_Patient/Shin_Face_Sweating
   - Graphics/CharacterImage/Shin_Patient/Shin_Normal_Stand
   - Graphics/CharacterImage/Shin_Patient/Shin_Face_RealSmile
   - Graphics/CharacterImage/Shin_Patient/Shin_Face_Sweating
@@ -965,7 +965,7 @@ MonoBehaviour:
   - Graphics/CharacterImage/Baek_Doctor/Baek_Face_Wondering
   - Graphics/CharacterImage/Baek_Doctor/Baek_Face_Angry
   - Graphics/CharacterImage/Yu_ nurse/Yu_Face_Mock
-  - Graphics/CharacterImage/Yu_ nurse/Yu_Face_Standard.png
+  - Graphics/CharacterImage/Yu_ nurse/Yu_Face_Standard
   - Graphics/CharacterImage/Yu_ nurse/Yu_Face_Standard
   ImageObj:
   - {fileID: 1123024302}

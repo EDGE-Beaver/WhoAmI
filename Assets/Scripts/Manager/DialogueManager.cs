@@ -128,6 +128,7 @@ public class DialogueManager : MonoBehaviour
     [Header("트랜지션 매니저")]
     public TransitionShaderController transitionShaderController;
     public GameObject transitionControllerobj;
+    public GlitchController glitchController;
 
     [Header("UI 요소들")]
     public TMP_Text speakerText;
@@ -269,6 +270,7 @@ public class DialogueManager : MonoBehaviour
         else if (isChoicePanelActive) return;//선택지 켜져있어도 빠꾸
         else if (isSkipTextAnimation) return;//스킵 중이어도 빠꾸
         else if (isTrandition) return;
+        else if(SceneStartAlert.isGamePaused) return;//진행중일때도 빠꾸. 
         //둘 다 뛰어넘었을 경우. 그러니까 선택지도 안 켜져 있고 다이얼로그로 레디일 때. 
         //업데이트와 기존 함수는 병렬적으로 적용되는가?
         if (Input.GetKeyDown(KeyCode.Space) || isClickDialogueBox)
@@ -517,6 +519,7 @@ public class DialogueManager : MonoBehaviour
 
         float currentDelay = defaultDelay; // 출력 속도
         remainTextAmout = fullText.Length;
+        DialogueText.fontSize = defaultDialogueTextSize;
 
         string cleanText = ""; // 🔥 최종 출력될 텍스트
 
@@ -784,7 +787,13 @@ public class DialogueManager : MonoBehaviour
             case "CircleFadeOut":
                 isTrandition = true;
                 transitionShaderController.StartFadeOut();
-          
+                break;
+
+            case "GlitchStart":
+                glitchController.StartGlitch();
+                break;
+            case "GlitchStop":
+                glitchController.StopGlitch();
                 break;
             default:
                 Debug.LogError("정의되지 않은 애니메이션입니다");
